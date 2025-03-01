@@ -10,24 +10,22 @@ import {LambdaStack} from "../lib/lambda-stack";
 const app = new cdk.App();
 
 const vpcStack = new VpcStack(app, 'VpcStack')
+
 const rdsStack = new RdsStack(app, 'RdsStack', {
     vpc: vpcStack.vpc
 })
 const lbStack = new LoadBalancerStack(app, 'LBStack', {
     vpc: vpcStack.vpc
 })
-const ecsStack = new EcsStack(app, 'ECSStack', {
-    vpc: vpcStack.vpc,
-    rdsConfig: rdsStack.rdsConfig
-})
+
 const lambdaStack = new LambdaStack(app, 'LambdaStack', {
     vpc: vpcStack.vpc,
     rdsConfig: rdsStack.rdsConfig
 })
+
 const lbAssociationStack = new LoadBalancerAssociationStack(app, 'LBAssociationStack', {
     vpc: vpcStack.vpc,
     lbListener: lbStack.listener,
-    ecsService: ecsStack.ecsService,
     lambdaStack: lambdaStack
 })
 
